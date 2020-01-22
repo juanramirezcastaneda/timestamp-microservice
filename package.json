@@ -1,0 +1,17 @@
+{
+  "name": "timestamp-microservice",
+  "version": "1.0.0",
+  "description": "A microservice to parse and utc timestamp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "javascript",
+    "node",
+    "timestamp"
+  ],
+  "author": "juanramirezcastaneda",
+  "license": "ISC"
+}
