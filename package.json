@@ -12,6 +12,10 @@
     "node",
     "timestamp"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juanramirezcastaneda/timestamp-microservice"
+  },
   "author": "juanramirezcastaneda",
   "license": "ISC"
 }
