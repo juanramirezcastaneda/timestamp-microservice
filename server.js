@@ -7,9 +7,7 @@ app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}||[0-9]{2}-[0-9]{
     res.status(200).send(`Timestamp service: ${req.params.date_string}`);
 });
 
-app.get("/", (req, res) => {
-    res.status(200).send("WHATABYTE: Food For Devs");
-});
+app.get('*', (req, res) => res.json({ "error": "Invalid Date" }));
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
