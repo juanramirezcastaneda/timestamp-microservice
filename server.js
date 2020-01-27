@@ -1,36 +1,12 @@
 var express = require('express');
 var app = express();
-try {
-    var mongoose = require('mongoose');
-} catch (e) {
-    console.log(e);
-}
-var fs = require('fs');
-var path = require('path');
-var bodyParser = require('body-parser');
-var router = express.Router();
 
-var enableCORS = function (req, res, next) {
-    if (!process.env.DISABLE_XORIGIN) {
-        var allowedOrigins = ['https://marsh-glazer.gomix.me', 'https://narrow-plane.gomix.me', 'https://www.freecodecamp.com'];
-        var origin = req.headers.origin;
-        if (!process.env.XORIGIN_RESTRICT || allowedOrigins.indexOf(origin) > -1) {
-            console.log(req.method);
-            res.set({
-                "Access-Control-Allow-Origin": origin,
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-            });
-        }
-    }
-    next();
-};
+const port = process.env.PORT || "8000";
 
-var timeout = 10000;
+app.get("/", (req, res) => {
+    res.status(200).send("WHATABYTE: Food For Devs");
+});
 
-app.use(bodyParser.urlencoded({ extended: 'false' }));
-app.use(bodyParser.json());
-
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+app.listen(port, () => {
+    console.log(`Listening to requests on http://localhost:${port}`);
 });
