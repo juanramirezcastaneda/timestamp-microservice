@@ -18,5 +18,8 @@
     "url": "https://github.com/juanramirezcastaneda/timestamp-microservice"
   },
   "author": "juanramirezcastaneda",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
