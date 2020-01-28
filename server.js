@@ -18,15 +18,16 @@ app.listen(port, () => {
 });
 
 function parseDateFromRegex(dateString) {
-    const regexForDate = /([0-9]{4})-([0-9]{2})-([0-9]{2})||([0-9]{2})-([0-9]{2})-([0-9]{4})/;
+    const regexForDate = /([0-9]{4})-([0-9]{2})-([0-9]{2})|([0-9]{2})-([0-9]{2})-([0-9]{4})/;
 
     const result = dateString.match(regexForDate);
-    let day, month, year = null;
-    if (result[1].length === 4) {
+    let day, month, year;
+    console.log(result);
+    if (result[1] && result[1].length === 4) {
         year = Number(result[1]);
         month = Number(result[2]);
         day = Number(result[3]);
     }
 
-    return { day: result[1] };
+    return { day, month, year };
 }
