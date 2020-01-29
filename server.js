@@ -5,13 +5,14 @@ const port = process.env.PORT || "8000";
 
 app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4})?", (req, res, next) => {
     const newDateObject = req.params.date_string && parseDateFromRegex(req.params.date_string);
+    if (newDateObject.month > 12 || newDateObject.month < 1) { next(); }
 
-    if (newDateObject.month > 12) { next(); }
+    const monthNumber = newDateObject.month - 1;
     const newDate = newDateObject ?
-        new Date(newDateObject.year, newDateObject.month, newDateObject.day) :
+        new Date(newDateObject.year, monthNumber, newDateObject.day) :
         new Date();
 
-    console.log(newDate.getTime());
+    // if (newDate.getMonth() !== monthNumber) { next(); }
 
     res.json({ "unix": newDate.getTime(), "utc": newDate.toUTCString() });
 });
@@ -39,6 +40,6 @@ function parseDateFromRegex(dateString) {
         month = Number(result[5]);
         day = Number(result[4]);
     }
-    month = month - 1;
+    month = month;
     return { day, month, year };
 }
