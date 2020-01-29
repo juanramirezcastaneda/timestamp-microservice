@@ -12,7 +12,7 @@ app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2
         new Date(newDateObject.year, monthNumber, newDateObject.day) :
         new Date();
 
-    // if (newDate.getMonth() !== monthNumber) { next(); }
+    if (newDate.getMonth() !== monthNumber) { next(); }
 
     res.json({ "unix": newDate.getTime(), "utc": newDate.toUTCString() });
 });
