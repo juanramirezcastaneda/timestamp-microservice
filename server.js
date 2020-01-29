@@ -3,14 +3,15 @@ var app = express();
 
 const port = process.env.PORT || "8000";
 
-app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4})?", (req, res) => {
-
-    console.log(req.params.date_string);
-
+app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4})?", (req, res, next) => {
     const newDateObject = req.params.date_string && parseDateFromRegex(req.params.date_string);
+
+    if (newDateObject.month > 12) { next(); }
     const newDate = newDateObject ?
-        new Date(newDateObject.year, newDateObject.month - 1, newDateObject.day) :
+        new Date(newDateObject.year, newDateObject.month, newDateObject.day) :
         new Date();
+
+    console.log(newDate.getTime());
 
     res.json({ "unix": newDate.getTime(), "utc": newDate.toUTCString() });
 });
@@ -28,6 +29,7 @@ function parseDateFromRegex(dateString) {
 
     if (result[1] && result[1].length === 4) {
         year = Number(result[1]);
+        // To ensure index for month
         month = Number(result[2]);
         day = Number(result[3]);
     }
@@ -37,6 +39,6 @@ function parseDateFromRegex(dateString) {
         month = Number(result[5]);
         day = Number(result[4]);
     }
-
+    month = month - 1;
     return { day, month, year };
 }
