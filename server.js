@@ -8,11 +8,12 @@ const port = process.env.PORT || "8000";
 
 
 app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4}|[0-9]{13})?", (req, res, next) => {
-    const newDateObject = parseDateFromRegex(req.params.date_string);
-    if (newDateObject.month > 12 || newDateObject.month < 1) { next(); }
-    if (newDate.getMonth() !== monthNumber) { next(); }
+    const { date, month } = parseDateFromRegex(req.params.date_string);
+    if (month > 12 || month < 1) { next(); }
+    console.info(newDateObject);
+    if (date.getMonth() !== month) { next(); }
 
-    res.json({ "unix": newDate.getTime(), "utc": newDate.toUTCString() });
+    res.json({ "unix": date.getTime(), "utc": date.toUTCString() });
 });
 
 app.get('*', (req, res) => res.json({ "error": "Invalid Date" }));
