@@ -7,12 +7,14 @@ app.use(cors({ optionSuccessStatus: 200 }));
 const port = process.env.PORT || "8000";
 
 app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4}|[0-9]{13})?", (req, res, next) => {
-    const { date, month } = parseDateFromRegex(req.params.date_string);
+    const { date, month, isUnix } = parseDateFromRegex(req.params.date_string);
 
     if (month && (month > 12 || month < 1)) { next(); }
     if (month && ((date.getMonth() + 1) !== month)) { next(); }
 
-    res.json({ "unix": date.getTime(), "utc": date.toUTCString() });
+    let unixTime = isUnix ? (date.getTime() / 1000) : date.getTime();
+
+    res.json({ "unix": unixTime, "utc": date.toUTCString() });
 });
 
 app.get('*', (req, res) => res.json({ "error": "Invalid Date" }));
@@ -28,7 +30,7 @@ function parseDateFromRegex(dateString) {
 
     if (result && result[7] && result[7].length === 13) {
         unixDate = Number(result[7]);
-        return { date: new Date(unixDate * 1000), month: month };
+        return { date: new Date(unixDate * 1000), month: month, isUnix: true };
     }
 
     if (result && result[4] && result[4].length === 4) {
