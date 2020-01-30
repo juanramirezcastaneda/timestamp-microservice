@@ -10,10 +10,8 @@ const port = process.env.PORT || "8000";
 app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4}|[0-9]{13})?", (req, res, next) => {
     const { date, month } = parseDateFromRegex(req.params.date_string);
 
-    console.info(date);
-    console.info(month);
-    if (month && month > 12 || month < 1) { next(); }
-    if (month && date.getMonth() !== month) { next(); }
+    if (month && (month > 12 || month < 1)) { next(); }
+    // if (month && (date.getMonth() !== month)) { next(); }
 
     res.json({ "unix": date.getTime(), "utc": date.toUTCString() });
 });
@@ -29,16 +27,16 @@ function parseDateFromRegex(dateString) {
     const result = regexForDate.exec(dateString);
     let day, month, year, unixDate;
 
-    if (result[0] && result[7].length === 13) {
+    if (result[7] && result[7].length === 13) {
         unixDate = Number(result[7]);
         return { date: new Date(unixDate * 1000), month: month };
     }
 
-    if (result[0] && result[1].length === 4) {
-        year = Number(result[1]);
+    if (result[4] && result[4].length === 4) {
+        year = Number(result[4]);
         // To ensure index for month
-        month = Number(result[2]);
-        day = Number(result[3]);
+        month = Number(result[5]);
+        day = Number(result[6]);
         return { date: new Date(year, month - 1, day), month: month };
     }
 
