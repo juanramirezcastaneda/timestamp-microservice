@@ -50,7 +50,5 @@ function parseDateFromRegex(dateString) {
         return { date: new Date(year, month - 1, day), month: month };
     }
 
-
-
     return { date: new Date(), month: month };
 }
