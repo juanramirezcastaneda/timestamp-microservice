@@ -6,12 +6,11 @@ app.use(cors({ optionSuccessStatus: 200 }));
 
 const port = process.env.PORT || "8000";
 
-
 app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4}|[0-9]{13})?", (req, res, next) => {
     const { date, month } = parseDateFromRegex(req.params.date_string);
 
     if (month && (month > 12 || month < 1)) { next(); }
-    // if (month && (date.getMonth() !== month)) { next(); }
+    if (month && ((date.getMonth() + 1) !== month)) { next(); }
 
     res.json({ "unix": date.getTime(), "utc": date.toUTCString() });
 });
