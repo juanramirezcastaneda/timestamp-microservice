@@ -27,12 +27,12 @@ function parseDateFromRegex(dateString) {
     const result = regexForDate.exec(dateString);
     let day, month, year, unixDate;
 
-    if (result[7] && result[7].length === 13) {
+    if (result && result[7] && result[7].length === 13) {
         unixDate = Number(result[7]);
         return { date: new Date(unixDate * 1000), month: month };
     }
 
-    if (result[4] && result[4].length === 4) {
+    if (result && result[4] && result[4].length === 4) {
         year = Number(result[4]);
         // To ensure index for month
         month = Number(result[5]);
@@ -40,11 +40,11 @@ function parseDateFromRegex(dateString) {
         return { date: new Date(year, month - 1, day), month: month };
     }
 
-    if (result[4] && result[4].length === 4) {
-        year = Number(result[6]);
+    if (result && result[3] && result[3].length === 4) {
+        year = Number(result[3]);
         // To ensure index for month
-        month = Number(result[5]);
-        day = Number(result[4]);
+        month = Number(result[2]);
+        day = Number(result[1]);
         return { date: new Date(year, month - 1, day), month: month };
     }
 
