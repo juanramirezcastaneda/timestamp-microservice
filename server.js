@@ -11,9 +11,11 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4}|[0-9]{13})?", (req, res, next) => {
-    const { date, month, isUnix } = parseDateFromRegex(req.params.date_string);
+    const { date, month } = parseDateFromRegex(req.params.date_string);
 
-    if (isDateWhithinBoundaries(month, date.getMonth() + 1)) { next(); };
+    const isValid = isDateWhithinBoundaries(month, date.getMonth() + 1);
+
+    if (isValid) { next(); };
 
     res.json({ "unix": date.getTime(), "utc": date.toUTCString() });
 });
@@ -31,7 +33,8 @@ function parseDateFromRegex(dateString) {
 
     if (result && result[7] && result[7].length === 13) {
         unixDate = Number(result[7]);
-        return { date: new Date(unixDate), month: month };
+        const newDate = new Date(unixDate);
+        return { date: newDate, month: newDate.getMonth() + 1 };
     }
 
     if (result && result[4] && result[4].length === 4) {
