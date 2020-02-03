@@ -6,6 +6,10 @@ app.use(cors({ optionSuccessStatus: 200 }));
 
 const port = process.env.PORT || "8000";
 
+app.get("/", function (req, res) {
+    res.sendFile(__dirname + '/views/index.html');
+});
+
 app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{4}|[0-9]{13})?", (req, res, next) => {
     const { date, month, isUnix } = parseDateFromRegex(req.params.date_string);
 
