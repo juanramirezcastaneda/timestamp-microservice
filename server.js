@@ -11,9 +11,6 @@ app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2
 
     if (isDateWhithinBoundaries(month, date.getMonth() + 1)) { next(); };
 
-    // if (month && (month > 12 || month < 1)) { next(); }
-    // if (month && ((date.getMonth() + 1) !== month)) { next(); }
-
     res.json({ "unix": date.getTime(), "utc": date.toUTCString() });
 });
 
@@ -30,7 +27,7 @@ function parseDateFromRegex(dateString) {
 
     if (result && result[7] && result[7].length === 13) {
         unixDate = Number(result[7]);
-        return { date: new Date(unixDate), month: month, isUnix: true };
+        return { date: new Date(unixDate), month: month };
     }
 
     if (result && result[4] && result[4].length === 4) {
