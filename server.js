@@ -12,9 +12,7 @@ app.get("/api/timestamp/:date_string([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}-[0-9]{2
     if (month && (month > 12 || month < 1)) { next(); }
     if (month && ((date.getMonth() + 1) !== month)) { next(); }
 
-    let unixTime = isUnix ? (date.getTime() / 1000) : date.getTime();
-
-    res.json({ "unix": unixTime, "utc": date.toUTCString() });
+    res.json({ "unix": date.getTime(), "utc": date.toUTCString() });
 });
 
 app.get('*', (req, res) => res.json({ "error": "Invalid Date" }));
@@ -30,7 +28,7 @@ function parseDateFromRegex(dateString) {
 
     if (result && result[7] && result[7].length === 13) {
         unixDate = Number(result[7]);
-        return { date: new Date(unixDate * 1000), month: month, isUnix: true };
+        return { date: new Date(unixDate), month: month, isUnix: true };
     }
 
     if (result && result[4] && result[4].length === 4) {
